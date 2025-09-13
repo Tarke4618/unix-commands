@@ -49,15 +49,25 @@ except ImportError:
     logger.error("tkinter is not installed. Please ensure it is available (usually included with Python).")
     sys.exit(1)
 
+import configparser
+
 # --- Configuration ---
 class Config:
     # Paths
-    INPUT_FOLDER = r"G:\temp6"  # Default, will be overridden by folder selection
     CUSTOM_OUTPUT_PATH: Optional[str] = None  # e.g., r"/home/user/previews"
 
+    # --- Load from config.ini ---
+    config = configparser.ConfigParser()
+    config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+
     # Metadata Extraction Settings
-    API_URL = "https://theporndb.net/graphql"
-    API_TOKEN = "API-key"  # Replace with your valid ThePornDB API token
+    API_URL = config.get('Western', 'api_url', fallback='https://theporndb.net/graphql')
+    API_TOKEN = config.get('Western', 'api_token')
+
+    if API_TOKEN == 'YOUR_API_TOKEN_HERE' or not API_TOKEN:
+        print("API token is not configured. Please edit config.ini and set your ThePornDB API token.")
+        exit(1)
+
     QUERY = """
     query GetSceneMetadata($term: String!) {
       searchScene(term: $term) {
@@ -103,7 +113,7 @@ class Config:
     CONFIRM_CUT_POINTS_REQUIRED = False
     BLACKLISTED_CUT_POINTS = []
     EXCLUDED_FILES = [""]
-    FONT_PATH = "/usr/share/fonts/liberation/LiberationSans-Regular.ttf"
+    FONT_PATH = config.get('General', 'font_path', fallback='/usr/share/fonts/liberation/LiberationSans-Regular.ttf')
 
     VALID_VIDEO_EXTENSIONS = (".mp4", ".mkv", ".m2ts", ".m4v", ".avi", ".ts", ".wmv", ".mov")
 

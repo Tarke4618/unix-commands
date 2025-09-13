@@ -1,11 +1,62 @@
-# move-files
-The unix script to move all files from source folder to destination folder by scaning it 5 layers deep and also deleting the empty folders in the source folder and also deleting any files other that images and GIFS the the destination folder
+# Media Utility Suite
 
+This repository contains a suite of tools for managing media files. It is divided into two main components: a powerful shell script for general file management and a set of specialized Python tools for organizing adult media.
 
-The file [1](move_files.sh) just move the files from source to destination with scanning 2 layers deep
+## 1. Ultimate Media Utility Script
 
-The file [2](move&delete.sh) moves the files like the previous one but it also does delete the empty folders in the source folder
+`Ultimate_Script.sh` is a versatile shell script that provides a graphical user interface (GUI) for various file management tasks.
 
-The file [3](move&delete&images.sh) moves the files from the source to the destination and also deletes the empty folders in the source and it also deletes the non-image files from the destination folder (everything except images and GIFs)
+### Features:
 
-The final file (move_photos.sh) does all that but better example does that with any source or destination you want because it prompts you to select the folders instead of the previous ones which has a fixed source and destination.
+*   **Archive Extraction:** Extract a variety of archive formats.
+*   **Photo Management:** Move photos from a source directory to a destination, cleaning up empty folders.
+*   **File Renaming:** Batch rename files with simple, regex, or smart renaming modes.
+*   **Video Processing:** Compress videos or add subtitles.
+*   **Configuration:** A settings panel to customize the script's behavior.
+*   **Dependency Check:** Checks for required dependencies and offers to install them.
+*   **Dry Run Mode:** Preview changes before they are made.
+*   **Backup:** Automatically back up directories before renaming files.
+
+### How to Run:
+
+1.  Make sure you have all the dependencies installed (the script will check for you).
+2.  Run the script from your terminal:
+    ```bash
+    ./Ultimate_Script.sh
+    ```
+3.  A GUI menu will appear. Select the operation you want to perform.
+
+### Script Structure:
+
+The main script `Ultimate_Script.sh` is a launcher that sources its functionality from the modules located in the `scripts/` directory. This modular design makes the script easier to maintain and extend.
+
+## 2. Python Media Tools
+
+The `metadata&preview_maker/` directory contains a set of specialized Python tools for organizing adult media from different sources.
+
+### Features:
+
+*   **Metadata Scraping:** Scrapes metadata from various online sources.
+*   **Cover & Screenshot Downloader:** Downloads cover images and screenshots.
+*   **Video Preview & Sheet Generator:** Creates video previews, animated WebP files, and contact sheets.
+*   **GUI Launcher:** A simple launcher to choose which processor to run.
+*   **Configuration File:** All settings are managed in a central `config.ini` file.
+
+### How to Run:
+
+1.  **Install Dependencies:** The Python scripts require `requests`, `beautifulsoup4`, `loguru`, and `Pillow`. The scripts will attempt to install these for you if they are missing.
+2.  **Configure:**
+    *   Open the `metadata&preview_maker/config.ini` file.
+    *   Set the `video_dir` to the directory where your video files are located.
+    *   For the Western processor, you **must** replace `YOUR_API_TOKEN_HERE` with a valid API token from `theporndb.net`.
+3.  **Launch the tool:**
+    ```bash
+    python3 metadata&preview_maker/run.py
+    ```
+4.  A GUI will appear. Choose which processor you want to run (Jav or Western).
+5.  The selected processor will then launch its own GUI for further options.
+
+### Tools:
+
+*   **Jav Processor (`Jav+Preview.py`):** For processing Japanese Adult Videos (JAV). Scrapes metadata from `javdatabase.com`.
+*   **Western Processor (`Western+preview.py`):** For processing Western adult videos. Scrapes metadata from `theporndb.net`.
