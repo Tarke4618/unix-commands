@@ -2,10 +2,19 @@ import os
 import requests
 import json
 import mimetypes
+import configparser
 
-# API Configuration
-API_URL = "https://theporndb.net/graphql"
-API_TOKEN = "API-key"  # Replace with your valid ThePornDB API token
+# --- Configuration ---
+config = configparser.ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+
+API_URL = config.get('Western', 'api_url', fallback='https://theporndb.net/graphql')
+API_TOKEN = config.get('Western', 'api_token')
+VIDEO_DIR = config.get('General', 'video_dir', fallback='/home/s/Videos/')
+
+if API_TOKEN == 'YOUR_API_TOKEN_HERE' or not API_TOKEN:
+    print("API token is not configured. Please edit config.ini and set your ThePornDB API token.")
+    exit(1)
 
 # Query Template
 QUERY = """
@@ -33,7 +42,7 @@ query GetSceneMetadata($term: String!) {
 """
 
 # Folder Configuration
-folder_path = "/home/s/Videos"  # Your folder path from the error
+folder_path = VIDEO_DIR
 
 def format_tags(tags):
     """Format tags to lowercase with dots for spaces and spaces between tags."""
